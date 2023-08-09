@@ -1,0 +1,74 @@
+<div *ngIf="error && error.length; else elseTemplate">
+  <div class="alert alert-danger">
+    {{ error }}
+  </div>
+</div>
+<ng-template #elseTemplate>
+  <div *ngIf="!picture" class="spinner-grow" role="status"></div>
+  <div class="d-flex flex-column flex-grow-1">
+    <div class="d-flex mb-3">
+      <form class="w-100 d-flex" (submit)="onSubmit()">
+        <a [routerLink]="['/']" class="btn btn-lg btn-danger me-3">Back</a>
+        <input type="text" class="form-control me-3" [formControl]="getFormControl(form.get('name'))">
+        <button type="submit" class="btn btn-lg btn-success">Save</button>
+      </form>
+    </div>
+    <div class="d-flex flex-column flex-grow-1 border border-1 border-dark">
+      <div class="d-flex flex-row align-items-center border-bottom p-3">
+        <button class="btn btn-outline-success me-3 my-sm-1" (click)="addFigure()">
+          <i class="bi bi-plus"></i>
+        </button>
+        <div *ngIf="grouping || unionising" class="alert alert-info m-0 py-2">
+          <i class="bi bi-info-circle-fill"></i>
+          Select object to group with or click on free space to cancel grouping
+        </div>
+      </div>
+      <div *ngIf="layer" id="picture-menu" #pictureMenu>
+        <ul class="dropdown-menu d-block">
+          <li><button
+            id="picture-regroup-button"
+            class="dropdown-item"
+            [disabled]="!((layer.children?.length || 0) > 1)"
+            (click)="groupFiguresClick()"
+          >Group / Change group</button></li>
+          <li><button
+            id="picture-union-button"
+            class="dropdown-item"
+            [disabled]="unableToUnion()"
+            (click)="unionFiguresClick()"
+          >Union groups</button></li>
+          <li><button
+            id="picture-ungroup-button"
+            class="dropdown-item"
+            [disabled]="unableToUngroup()"
+            (click)="ungroupFigureClick()"
+          >Ungroup</button></li>
+          <li class="d-flex">
+            <div class="input-group py-1 px-3">
+              <input
+                class="form-control"
+                placeholder="Comment"
+                aria-describedby="picture-comment-button"
+                [(ngModel)]="comment"
+              >
+              <button
+                id="picture-comment-button"
+                class="w-auto btn btn-primary"
+                type="button"
+                data-bs-toggle="tooltip"
+                title="Comment"
+                (click)="commentFigureClick()"
+              ><i class="bi bi-chat-left-text"></i></button>
+            </div>
+          </li>
+          <li><button
+            id="picture-delete-button"
+            class="dropdown-item text-danger"
+            (click)="deleteFigureClick()"
+          >Delete</button></li>
+        </ul>
+      </div>
+      <div id="picture" class="flex-grow-1" #picture></div>
+    </div>
+  </div>
+</ng-template>

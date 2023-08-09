@@ -1,0 +1,29 @@
+<div class="container">
+  <form style="margin: 0 25%;" [formGroup]="credentials" (submit)="loginOrSignup('login')">
+    <h2 class="form-signin-heading">Login</h2>
+    <br/>
+    <label for="username" class="sr-only">Email address</label>
+    <input type="email" id="username" name="username" [formControl]="getFormControl(credentials.get('username'))"
+           class="form-control" placeholder="User Name" required>
+    <br/>
+    <label for="password" class="sr-only">Password</label>
+    <input type="password" id="password" name="password" [formControl]="getFormControl(credentials.get('password'))"
+           class="form-control" placeholder="Password" required>
+    <br/>
+    <div class="d-flex justify-content-between">
+      <button
+        class="btn btn-lg btn-primary"
+        type="submit"
+        [disabled]="!credentials.valid"
+      >Log in</button>
+      <button
+        class="btn btn-lg btn-primary"
+        type="button"
+        [disabled]="!credentials.valid"
+        (click)="loginOrSignup('signup')"
+      >Sign up</button>
+    </div>
+    <br/>
+    <div *ngIf="invalidLogin" class="alert alert-danger m-0"> {{ error }} </div>
+  </form>
+</div>

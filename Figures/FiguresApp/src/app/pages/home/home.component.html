@@ -1,0 +1,74 @@
+<div class="d-flex flex-row justify-content-between align-items-center mb-3">
+  <h4 class="m-0">Pictures</h4>
+  <div *ngIf="error && error.length" class="alert alert-danger m-0">
+    {{ error }}
+  </div>
+  <div>
+    <button
+      class="btn btn-danger me-3"
+      (click)="deletePictures(selectedKeys)"
+      [disabled]="!(selectedKeys && selectedKeys.length)"
+    >Delete</button>
+    <button
+      class="btn btn-success"
+      (click)="addPicture()"
+    >Add</button>
+  </div>
+</div>
+<div class="flex-grow-1">
+  <kendo-grid
+    kendoGridSelectBy="id"
+    [(selectedKeys)]="selectedKeys"
+    [kendoGridBinding]="data"
+    [reorderable]="true"
+    [sortable]="true"
+    [loading]="loading"
+  >
+    <kendo-grid-checkbox-column
+      [width]="45"
+      [headerClass]="{ 'text-center': true }"
+      [class]="{ 'text-center': true }"
+      [resizable]="false"
+      [reorderable]="false"
+      [columnMenu]="false"
+      [showSelectAll]="true"
+    ></kendo-grid-checkbox-column>
+    <kendo-grid-column field="id" title="ID">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{ dataItem.id }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="name" title="Name">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{ dataItem.name }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="figuresCount" title="Figures amount">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{ dataItem.figuresCount }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="changed" title="Changed">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{ dataItem.changed.toLocaleDateString('en-US') }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
+      class="text-center"
+      title="Actions"
+      [width]="200"
+    >
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <button class="btn btn-outline-primary me-3" (click)="editPicture(dataItem.id)">
+          <i class="bi bi-pencil"></i>
+        </button>
+<!--        <button class="btn btn-outline-secondary me-3">-->
+<!--          <i class="bi bi-cursor-text"></i>-->
+<!--        </button>-->
+        <button class="btn btn-outline-danger" (click)="deletePicture(dataItem.id)">
+          <i class="bi bi-trash"></i>
+        </button>
+      </ng-template>
+    </kendo-grid-column>
+  </kendo-grid>
+</div>
